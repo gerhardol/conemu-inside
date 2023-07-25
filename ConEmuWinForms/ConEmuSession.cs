@@ -473,7 +473,7 @@ namespace ConEmu.WinForms
 				throw new ArgumentNullException(nameof(dirLocalTempRoot));
 
 			// This one MUST be the last switch
-			cmdl.AppendSwitch("-cmd");
+			cmdl.AppendSwitch("-run");
 
 			// Console mode command
 			// NOTE: if placed AFTER the payload command line, otherwise somehow conemu hooks won't fetch the switch out of the cmdline, e.g. with some complicated git fetch/push cmdline syntax which has a lot of colons inside on itself
@@ -559,6 +559,15 @@ namespace ConEmu.WinForms
 				xmlElem.SetAttribute(ConEmuConstants.XmlAttrName, keyname);
 				xmlElem.SetAttribute("type", "hex");
 				xmlElem.SetAttribute("data", (hostcontext.IsStatusbarVisibleInitial ? 1 : 0).ToString());
+			}
+
+			// Enable "far" editor without a modifier key (default is left control)
+			{
+				string keyname = "FarGotoEditorVk";
+				var xmlElem = ((XmlElement)(xmlSettings.SelectSingleNode($"value[@name='{keyname}']") ?? xmlSettings.AppendChild(xmldoc.CreateElement("value"))));
+				xmlElem.SetAttribute(ConEmuConstants.XmlAttrName, keyname);
+				xmlElem.SetAttribute("type", "hex");
+				xmlElem.SetAttribute("data", 0.ToString());
 			}
 
 			// Environment variables
